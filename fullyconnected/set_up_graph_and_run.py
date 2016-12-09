@@ -27,7 +27,7 @@ def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, vali
       # the softmax and cross-entropy (it's one operation in TensorFlow, because
       # it's very common, and it can be optimized). We take the average of this
       # cross-entropy across all training examples: that's our loss.
-      logits = tf.matmul(tf_train_dataset, weights) + biases
+      logits = tf.nn.relu(tf.matmul(tf_train_dataset, weights) + biases)
       loss = tf.reduce_mean(
         tf.nn.softmax_cross_entropy_with_logits(logits, tf_train_labels))
 
