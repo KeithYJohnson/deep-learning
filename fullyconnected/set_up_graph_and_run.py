@@ -18,30 +18,44 @@ def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, vali
       # These are the parameters that we are going to be training. The weight
       # matrix will be initialized using random values following a (truncated)
       # normal distribution. The biases get initialized to zero.
-      weights = tf.Variable(
-        tf.truncated_normal([image_size * image_size, num_labels]))
-      biases = tf.Variable(tf.zeros([num_labels]))
+      global w2, b2, w3, b3
+      w2 = tf.Variable(
+        tf.truncated_normal([image_size * image_size, hidden_layer_size]))
+      b2 = tf.Variable(tf.zeros([hidden_layer_size]))
+      w3 = tf.Variable(
+        tf.truncated_normal([hidden_layer_size, num_labels]))
+      b3 = tf.Variable(tf.zeros([num_labels]))
 
       # Training computation.
       # We multiply the inputs with the weight matrix, and add biases. We compute
       # the softmax and cross-entropy (it's one operation in TensorFlow, because
       # it's very common, and it can be optimized). We take the average of this
       # cross-entropy across all training examples: that's our loss.
-      logits = tf.nn.relu(tf.matmul(tf_train_dataset, weights) + biases)
+      # Training computation.
+      def forward_propagate(training_set):
+          a2 = tf.nn.relu(tf.matmul(training_set, w2) + b2)
+          a3 = tf.nn.relu(tf.matmul(a2, w3) + b3)
+          return a3
+
+      train_a3 =forward_propagate(tf_train_dataset)
+
       loss = tf.reduce_mean(
-        tf.nn.softmax_cross_entropy_with_logits(logits, tf_train_labels))
+        tf.nn.softmax_cross_entropy_with_logits(train_a3, tf_train_labels))
+
 
       # Optimizer.
       # We are going to find the minimum of this loss using gradient descent.
       optimizer = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
-
       # Predictions for the training, validation, and test data.
       # These are not part of training, but merely here so that we can report
       # accuracy figures as we train.
-      train_prediction = tf.nn.softmax(logits)
-      valid_prediction = tf.nn.softmax(
-        tf.matmul(tf_valid_dataset, weights) + biases)
-      test_prediction = tf.nn.softmax(tf.matmul(tf_test_dataset, weights) + biases)
+
+        # Predictions for the training, validation, and test data.
+      train_prediction = tf.nn.softmax(train_a3)
+      valid_prediction = tf.nn.softmax(forward_propagate(tf_valid_dataset))
+      test_prediction =  tf.nn.softmax(forward_propagate(tf_test_dataset))
+
+
 
 
 
