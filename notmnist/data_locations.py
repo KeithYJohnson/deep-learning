@@ -1,0 +1,5 @@
+train_folders = ['/Users/keithjohnson/datasets/notMNIST_large/A', '/Users/keithjohnson/datasets/notMNIST_large/B', '/Users/keithjohnson/datasets/notMNIST_large/C', '/Users/keithjohnson/datasets/notMNIST_large/D', '/Users/keithjohnson/datasets/notMNIST_large/E', '/Users/keithjohnson/datasets/notMNIST_large/F', '/Users/keithjohnson/datasets/notMNIST_large/G', '/Users/keithjohnson/datasets/notMNIST_large/H', '/Users/keithjohnson/datasets/notMNIST_large/I', '/Users/keithjohnson/datasets/notMNIST_large/J']
+test_folders  = ['/Users/keithjohnson/datasets/notMNIST_small/A', '/Users/keithjohnson/datasets/notMNIST_small/B', '/Users/keithjohnson/datasets/notMNIST_small/C', '/Users/keithjohnson/datasets/notMNIST_small/D', '/Users/keithjohnson/datasets/notMNIST_small/E', '/Users/keithjohnson/datasets/notMNIST_small/F', '/Users/keithjohnson/datasets/notMNIST_small/G', '/Users/keithjohnson/datasets/notMNIST_small/H', '/Users/keithjohnson/datasets/notMNIST_small/I', '/Users/keithjohnson/datasets/notMNIST_small/J']
+
+image_size = 28  # Pixel width and height.
+pixel_depth = 255.0  # Number of levels per pixel.
