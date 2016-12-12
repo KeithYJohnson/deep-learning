@@ -25,15 +25,15 @@ print('reformatted Test set', reformatted_test_dataset.shape, reformatted_test_l
 
 graph = tf.Graph()
 
-logistic_regression(
-    graph,
-    reformatted_train_dataset,
-    reformatted_train_labels,
-    reformatted_valid_dataset,
-    reformatted_valid_labels,
-    reformatted_test_dataset,
-    reformatted_test_labels
-)
+# logistic_regression(
+#     graph,
+#     reformatted_train_dataset,
+#     reformatted_train_labels,
+#     reformatted_valid_dataset,
+#     reformatted_valid_labels,
+#     reformatted_test_dataset,
+#     reformatted_test_labels
+# )
 
 set_up_graph_and_run(
     graph,

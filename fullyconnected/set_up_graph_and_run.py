@@ -2,6 +2,7 @@ from params import *
 from six.moves import range
 import tensorflow as tf
 import numpy as np
+from ipdb import set_trace as st
 
 def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, valid_labels, test_dataset, test_labels, regularization_strength=0.01):
     with graph.as_default():
@@ -33,12 +34,14 @@ def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, vali
       # it's very common, and it can be optimized). We take the average of this
       # cross-entropy across all training examples: that's our loss.
       # Training computation.
-      def forward_propagate(training_set):
+      def forward_propagate(training_set, dropout=False):
           a2 = tf.nn.relu(tf.matmul(training_set, w2) + b2)
+          if dropout:
+              a2 = tf.nn.dropout(a2, 0.5)
           z3 = tf.matmul(a2, w3) + b3
           return z3
 
-      train_z3 = forward_propagate(tf_train_dataset)
+      train_z3 = forward_propagate(tf_train_dataset, dropout=True)
       unregularized_loss = tf.reduce_mean(
         tf.nn.softmax_cross_entropy_with_logits(train_z3, tf_train_labels))
 
