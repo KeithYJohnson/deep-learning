@@ -7,6 +7,7 @@ from params import *
 from load_data import *
 from reformat import *
 from set_up_graph_and_run import *
+from logistic_regression import *
 
 [train_dataset,
  train_labels,
@@ -23,6 +24,17 @@ print('reformatted Validation set', reformatted_valid_dataset.shape, reformatted
 print('reformatted Test set', reformatted_test_dataset.shape, reformatted_test_labels.shape)
 
 graph = tf.Graph()
+
+logistic_regression(
+    graph,
+    reformatted_train_dataset,
+    reformatted_train_labels,
+    reformatted_valid_dataset,
+    reformatted_valid_labels,
+    reformatted_test_dataset,
+    reformatted_test_labels
+)
+
 set_up_graph_and_run(
     graph,
     reformatted_train_dataset,
