@@ -6,7 +6,7 @@ import numpy as np
 # With gradient descent training, even this much data is prohibitive.
 # Subset the training data for faster turnaround.
 
-def logistic_regression(graph, train_dataset, train_labels, valid_dataset, valid_labels, test_dataset, test_labels):
+def logistic_regression(graph, train_dataset, train_labels, valid_dataset, valid_labels, test_dataset, test_labels, regularization_strength=0.01):
     graph = tf.Graph()
     with graph.as_default():
 
@@ -33,8 +33,9 @@ def logistic_regression(graph, train_dataset, train_labels, valid_dataset, valid
       # cross-entropy across all training examples: that's our loss.
       logits = tf.matmul(tf_train_dataset, weights) + biases
       loss = tf.reduce_mean(
-        tf.nn.softmax_cross_entropy_with_logits(logits, tf_train_labels))
-
+        tf.nn.softmax_cross_entropy_with_logits(logits, tf_train_labels)) + \
+        regularization_strength * tf.nn.l2_loss(weights)
+        
       # Optimizer.
       # We are going to find the minimum of this loss using gradient descent.
       optimizer = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
