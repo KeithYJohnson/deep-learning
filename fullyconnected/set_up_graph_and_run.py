@@ -3,7 +3,7 @@ from six.moves import range
 import tensorflow as tf
 import numpy as np
 
-def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, valid_labels, test_dataset, test_labels):
+def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, valid_labels, test_dataset, test_labels, regularization_strength=0.01):
     with graph.as_default():
 
       # Input data. For the training data, we use a placeholder that will be fed
@@ -13,6 +13,7 @@ def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, vali
       tf_train_labels = tf.placeholder(tf.float32, shape=(batch_size, num_labels))
       tf_valid_dataset = tf.constant(valid_dataset)
       tf_test_dataset = tf.constant(test_dataset)
+      regularization_strength = tf.constant(regularization_strength)
 
       # Variables.
       # These are the parameters that we are going to be training. The weight
@@ -37,11 +38,14 @@ def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, vali
           z3 = tf.matmul(a2, w3) + b3
           return z3
 
-      train_z3 =forward_propagate(tf_train_dataset)
-
-      loss = tf.reduce_mean(
+      train_z3 = forward_propagate(tf_train_dataset)
+      unregularized_loss = tf.reduce_mean(
         tf.nn.softmax_cross_entropy_with_logits(train_z3, tf_train_labels))
 
+      w2_regulation_term = tf.nn.l2_loss(w2)
+      w3_regulation_term = tf.nn.l2_loss(w3)
+      regularization     = regularization_strength * (w2_regulation_term + w3_regulation_term)
+      loss = unregularized_loss + regularization
 
       # Optimizer.
       # We are going to find the minimum of this loss using gradient descent.
