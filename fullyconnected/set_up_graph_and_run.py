@@ -34,13 +34,13 @@ def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, vali
       # Training computation.
       def forward_propagate(training_set):
           a2 = tf.nn.relu(tf.matmul(training_set, w2) + b2)
-          a3 = tf.nn.relu(tf.matmul(a2, w3) + b3)
-          return a3
+          z3 = tf.matmul(a2, w3) + b3
+          return z3
 
-      train_a3 =forward_propagate(tf_train_dataset)
+      train_z3 =forward_propagate(tf_train_dataset)
 
       loss = tf.reduce_mean(
-        tf.nn.softmax_cross_entropy_with_logits(train_a3, tf_train_labels))
+        tf.nn.softmax_cross_entropy_with_logits(train_z3, tf_train_labels))
 
 
       # Optimizer.
@@ -51,7 +51,7 @@ def set_up_graph_and_run(graph, train_dataset, train_labels, valid_dataset, vali
       # accuracy figures as we train.
 
         # Predictions for the training, validation, and test data.
-      train_prediction = tf.nn.softmax(train_a3)
+      train_prediction = tf.nn.softmax(train_z3)
       valid_prediction = tf.nn.softmax(forward_propagate(tf_valid_dataset))
       test_prediction =  tf.nn.softmax(forward_propagate(tf_test_dataset))
 
