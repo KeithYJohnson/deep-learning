@@ -7,7 +7,7 @@ sys.path.append('/Users/keithjohnson/courses/deep_learning')
 from accuracy import accuracy
 
 batch_size = 16
-patch_size = 5
+patch_size = 5 #k subj ≡ kernel size along axis j.
 depth = 16
 num_hidden = 64
 
