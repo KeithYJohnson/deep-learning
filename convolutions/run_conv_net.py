@@ -47,10 +47,12 @@ def run_conv_net(
           def model(data):
             conv = tf.nn.conv2d(data, layer1_weights, strides=[1, 1, 1, 1], padding='SAME')
             hidden = tf.nn.relu(conv + layer1_biases)
-            conv = tf.nn.conv2d(hidden, layer2_weights, [1, 2, 2, 1], padding='SAME')
+            pool =  tf.nn.max_pool(hidden, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+            conv = tf.nn.conv2d(pool, layer2_weights, strides=[1, 1, 1, 1], padding='SAME')
             hidden = tf.nn.relu(conv + layer2_biases)
-            shape = hidden.get_shape().as_list()
-            reshape = tf.reshape(hidden, [shape[0], shape[1] * shape[2] * shape[3]])
+            pool =  tf.nn.max_pool(hidden, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+            shape = pool.get_shape().as_list()
+            reshape = tf.reshape(pool, [shape[0], shape[1] * shape[2] * shape[3]])
             hidden = tf.nn.relu(tf.matmul(reshape, layer3_weights) + layer3_biases)
             return tf.matmul(hidden, layer4_weights) + layer4_biases
 
