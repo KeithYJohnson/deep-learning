@@ -12,6 +12,8 @@ from build_dataset import *
 from generate_batch import *
 from train_skip_gram import *
 from params import *
+from read_final_embeddings import *
+from plot import *
 
 with open(dataset_pickle_file, 'rb') as f:
     save = pickle.load(f)
@@ -31,8 +33,9 @@ for num_skips, skip_window in [(2, 1), (4, 2)]:
     print('    batch:', [reverse_dictionary[bi] for bi in batch])
     print('    labels:', [reverse_dictionary[li] for li in labels.reshape(8)])
 
-
 final_embeddings = train_skip_gram(data,reverse_dictionary)
+f = open(final_embeddings_file, 'wb')
+pickle.dump(final_embeddings, f, pickle.HIGHEST_PROTOCOL)
 
 num_points = 400
 
