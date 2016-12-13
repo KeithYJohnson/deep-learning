@@ -9,6 +9,8 @@ from sklearn.manifold import TSNE
 from read_data import *
 from build_dataset import *
 from generate_batch import *
+from train_skip_gram import *
+
 filename = 'text8.zip'
 words = read_data(filename)
 print('Data size %d' % len(words))
@@ -24,3 +26,6 @@ for num_skips, skip_window in [(2, 1), (4, 2)]:
     print('\nwith num_skips = %d and skip_window = %d:' % (num_skips, skip_window))
     print('    batch:', [reverse_dictionary[bi] for bi in batch])
     print('    labels:', [reverse_dictionary[li] for li in labels.reshape(8)])
+
+
+final_embeddings = train_skip_gram(data,reverse_dictionary)
