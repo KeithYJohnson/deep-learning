@@ -1,4 +1,5 @@
 from __future__ import print_function
+from six.moves import cPickle as pickle
 import math
 import numpy as np
 import random
@@ -10,15 +11,18 @@ from read_data import *
 from build_dataset import *
 from generate_batch import *
 from train_skip_gram import *
+from params import *
 
-filename = 'text8.zip'
-words = read_data(filename)
-print('Data size %d' % len(words))
-
-data, count, dictionary, reverse_dictionary = build_dataset(words)
-print('Most common words (+UNK)', count[:5])
-print('Sample data', data[:10])
-del words  # Hint to reduce memory.
+with open(dataset_pickle_file, 'rb') as f:
+    save = pickle.load(f)
+    data = save['data']
+    count = save['count']
+    dictionary = save['dictionary']
+    reverse_dictionary = save['reverse_dictionary']
+    del save  # hint to help gc free up memory
+    print('len(data): ', len(data))
+    print('Most common words (+UNK)', count[:5])
+    print('Sample data', data[:10])
 
 for num_skips, skip_window in [(2, 1), (4, 2)]:
     data_index = 0
