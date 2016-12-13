@@ -29,3 +29,12 @@ for num_skips, skip_window in [(2, 1), (4, 2)]:
 
 
 final_embeddings = train_skip_gram(data,reverse_dictionary)
+
+num_points = 400
+
+print('final_embeddings: ', final_embeddings)
+tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=5000)
+two_d_embeddings = tsne.fit_transform(final_embeddings[1:num_points+1, :])
+
+words = [reverse_dictionary[i] for i in range(1, num_points+1)]
+plot(two_d_embeddings, words)
