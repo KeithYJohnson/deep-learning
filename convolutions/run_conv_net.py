@@ -29,6 +29,7 @@ def run_conv_net(
           keep_prob = tf.placeholder(tf.float32)
           tf_valid_dataset = tf.constant(valid_dataset)
           tf_test_dataset = tf.constant(test_dataset)
+          global_step = tf.Variable(0, trainable=False)
 
           # Variables.
           layer1_weights = tf.Variable(tf.truncated_normal(
@@ -64,7 +65,12 @@ def run_conv_net(
             tf.nn.softmax_cross_entropy_with_logits(logits, tf_train_labels))
 
           # Optimizer.
-          optimizer = tf.train.GradientDescentOptimizer(0.05).minimize(loss)
+          starter_learning_rate = 0.05
+          learning_rate = tf.train.exponential_decay(
+            starter_learning_rate, global_step, 100000, 0.96, staircase=True
+          )
+                                           # Passing global_step to minimize() will increment it at each step.
+          optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step)
 
           # Predictions for the training, validation, and test data.
           train_prediction = tf.nn.softmax(logits)
