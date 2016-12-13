@@ -7,7 +7,7 @@ sys.path.append('/Users/keithjohnson/courses/deep_learning')
 from accuracy import accuracy
 
 batch_size = 16
-patch_size = 5
+patch_size = 5 #k subj ≡ kernel size along axis j.
 depth = 16
 num_hidden = 64
 
@@ -45,12 +45,14 @@ def run_conv_net(
 
           # Model.
           def model(data):
-            conv = tf.nn.conv2d(data, layer1_weights, [1, 2, 2, 1], padding='SAME')
+            conv = tf.nn.conv2d(data, layer1_weights, strides=[1, 1, 1, 1], padding='SAME')
             hidden = tf.nn.relu(conv + layer1_biases)
-            conv = tf.nn.conv2d(hidden, layer2_weights, [1, 2, 2, 1], padding='SAME')
+            pool =  tf.nn.max_pool(hidden, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+            conv = tf.nn.conv2d(pool, layer2_weights, strides=[1, 1, 1, 1], padding='SAME')
             hidden = tf.nn.relu(conv + layer2_biases)
-            shape = hidden.get_shape().as_list()
-            reshape = tf.reshape(hidden, [shape[0], shape[1] * shape[2] * shape[3]])
+            pool =  tf.nn.max_pool(hidden, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+            shape = pool.get_shape().as_list()
+            reshape = tf.reshape(pool, [shape[0], shape[1] * shape[2] * shape[3]])
             hidden = tf.nn.relu(tf.matmul(reshape, layer3_weights) + layer3_biases)
             return tf.matmul(hidden, layer4_weights) + layer4_biases
 
