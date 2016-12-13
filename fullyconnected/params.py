@@ -6,3 +6,4 @@ num_labels   = 10
 num_steps    = 801
 batch_size   = 128
 hidden_layer_size = 1024
+num_channels = 1
