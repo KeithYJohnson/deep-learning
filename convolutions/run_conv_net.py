@@ -45,7 +45,7 @@ def run_conv_net(
 
           # Model.
           def model(data):
-            conv = tf.nn.conv2d(data, layer1_weights, [1, 2, 2, 1], padding='SAME')
+            conv = tf.nn.conv2d(data, layer1_weights, strides=[1, 1, 1, 1], padding='SAME')
             hidden = tf.nn.relu(conv + layer1_biases)
             conv = tf.nn.conv2d(hidden, layer2_weights, [1, 2, 2, 1], padding='SAME')
             hidden = tf.nn.relu(conv + layer2_biases)
