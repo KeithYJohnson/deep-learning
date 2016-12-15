@@ -14,6 +14,7 @@ from train_skip_gram import *
 from params import *
 from read_final_embeddings import *
 from plot import *
+from generate_cbow_batch import *
 
 with open(dataset_pickle_file, 'rb') as f:
     save = pickle.load(f)
@@ -36,6 +37,10 @@ for num_skips, skip_window in [(2, 1), (4, 2)]:
 final_embeddings = train_skip_gram(data,reverse_dictionary)
 f = open(final_embeddings_file, 'wb')
 pickle.dump(final_embeddings, f, pickle.HIGHEST_PROTOCOL)
+for cbow_window in [1, 2]:
+    batch, labels = generate_cbow_batch(data, 12, cbow_window)
+    print(batch)
+    print(labels)
 
 num_points = 400
 
