@@ -4,7 +4,7 @@ import random
 vocabulary_size = 50000
 dataset_pickle_file = 'word.pickle'
 final_embeddings_file = 'final_embeddings_file.pickle'
-final_embeddings_file = 'cbow_final_embeddings_file.pickle'
+cbow_final_embeddings_file = 'cbow_final_embeddings_file.pickle'
 
 ## Training params
 batch_size = 128
